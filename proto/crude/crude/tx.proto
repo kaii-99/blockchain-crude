@@ -74,6 +74,7 @@ message MsgCreatePost {
   string creator = 1;
   string title   = 2;
   string body    = 3;
+  repeated string tags = 4; // NEW MANDATORY FIELD
 }
 
 message MsgCreatePostResponse {

@@ -12,12 +12,59 @@ import (
 	sync "sync"
 )
 
+var _ protoreflect.List = (*_Post_5_list)(nil)
+
+type _Post_5_list struct {
+	list *[]string
+}
+
+func (x *_Post_5_list) Len() int {
+	if x.list == nil {
+		return 0
+	}
+	return len(*x.list)
+}
+
+func (x *_Post_5_list) Get(i int) protoreflect.Value {
+	return protoreflect.ValueOfString((*x.list)[i])
+}
+
+func (x *_Post_5_list) Set(i int, value protoreflect.Value) {
+	valueUnwrapped := value.String()
+	concreteValue := valueUnwrapped
+	(*x.list)[i] = concreteValue
+}
+
+func (x *_Post_5_list) Append(value protoreflect.Value) {
+	valueUnwrapped := value.String()
+	concreteValue := valueUnwrapped
+	*x.list = append(*x.list, concreteValue)
+}
+
+func (x *_Post_5_list) AppendMutable() protoreflect.Value {
+	panic(fmt.Errorf("AppendMutable can not be called on message Post at list field Tags as it is not of Message kind"))
+}
+
+func (x *_Post_5_list) Truncate(n int) {
+	*x.list = (*x.list)[:n]
+}
+
+func (x *_Post_5_list) NewElement() protoreflect.Value {
+	v := ""
+	return protoreflect.ValueOfString(v)
+}
+
+func (x *_Post_5_list) IsValid() bool {
+	return x.list != nil
+}
+
 var (
 	md_Post         protoreflect.MessageDescriptor
 	fd_Post_title   protoreflect.FieldDescriptor
 	fd_Post_body    protoreflect.FieldDescriptor
 	fd_Post_creator protoreflect.FieldDescriptor
 	fd_Post_id      protoreflect.FieldDescriptor
+	fd_Post_tags    protoreflect.FieldDescriptor
 )
 
 func init() {
@@ -27,6 +74,7 @@ func init() {
 	fd_Post_body = md_Post.Fields().ByName("body")
 	fd_Post_creator = md_Post.Fields().ByName("creator")
 	fd_Post_id = md_Post.Fields().ByName("id")
+	fd_Post_tags = md_Post.Fields().ByName("tags")
 }
 
 var _ protoreflect.Message = (*fastReflection_Post)(nil)
@@ -118,6 +166,12 @@ func (x *fastReflection_Post) Range(f func(protoreflect.FieldDescriptor, protore
 			return
 		}
 	}
+	if len(x.Tags) != 0 {
+		value := protoreflect.ValueOfList(&_Post_5_list{list: &x.Tags})
+		if !f(fd_Post_tags, value) {
+			return
+		}
+	}
 }
 
 // Has reports whether a field is populated.
@@ -141,6 +195,8 @@ func (x *fastReflection_Post) Has(fd protoreflect.FieldDescriptor) bool {
 		return x.Creator != ""
 	case "crude.crude.Post.id":
 		return x.Id != uint64(0)
+	case "crude.crude.Post.tags":
+		return len(x.Tags) != 0
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: crude.crude.Post"))
@@ -165,6 +221,8 @@ func (x *fastReflection_Post) Clear(fd protoreflect.FieldDescriptor) {
 		x.Creator = ""
 	case "crude.crude.Post.id":
 		x.Id = uint64(0)
+	case "crude.crude.Post.tags":
+		x.Tags = nil
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: crude.crude.Post"))
@@ -193,6 +251,12 @@ func (x *fastReflection_Post) Get(descriptor protoreflect.FieldDescriptor) proto
 	case "crude.crude.Post.id":
 		value := x.Id
 		return protoreflect.ValueOfUint64(value)
+	case "crude.crude.Post.tags":
+		if len(x.Tags) == 0 {
+			return protoreflect.ValueOfList(&_Post_5_list{})
+		}
+		listValue := &_Post_5_list{list: &x.Tags}
+		return protoreflect.ValueOfList(listValue)
 	default:
 		if descriptor.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: crude.crude.Post"))
@@ -221,6 +285,10 @@ func (x *fastReflection_Post) Set(fd protoreflect.FieldDescriptor, value protore
 		x.Creator = value.Interface().(string)
 	case "crude.crude.Post.id":
 		x.Id = value.Uint()
+	case "crude.crude.Post.tags":
+		lv := value.List()
+		clv := lv.(*_Post_5_list)
+		x.Tags = *clv.list
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: crude.crude.Post"))
@@ -241,6 +309,12 @@ func (x *fastReflection_Post) Set(fd protoreflect.FieldDescriptor, value protore
 // Mutable is a mutating operation and unsafe for concurrent use.
 func (x *fastReflection_Post) Mutable(fd protoreflect.FieldDescriptor) protoreflect.Value {
 	switch fd.FullName() {
+	case "crude.crude.Post.tags":
+		if x.Tags == nil {
+			x.Tags = []string{}
+		}
+		value := &_Post_5_list{list: &x.Tags}
+		return protoreflect.ValueOfList(value)
 	case "crude.crude.Post.title":
 		panic(fmt.Errorf("field title of message crude.crude.Post is not mutable"))
 	case "crude.crude.Post.body":
@@ -270,6 +344,9 @@ func (x *fastReflection_Post) NewField(fd protoreflect.FieldDescriptor) protoref
 		return protoreflect.ValueOfString("")
 	case "crude.crude.Post.id":
 		return protoreflect.ValueOfUint64(uint64(0))
+	case "crude.crude.Post.tags":
+		list := []string{}
+		return protoreflect.ValueOfList(&_Post_5_list{list: &list})
 	default:
 		if fd.IsExtension() {
 			panic(fmt.Errorf("proto3 declared messages do not support extensions: crude.crude.Post"))
@@ -354,6 +431,12 @@ func (x *fastReflection_Post) ProtoMethods() *protoiface.Methods {
 		if x.Id != 0 {
 			n += 1 + runtime.Sov(uint64(x.Id))
 		}
+		if len(x.Tags) > 0 {
+			for _, s := range x.Tags {
+				l = len(s)
+				n += 1 + l + runtime.Sov(uint64(l))
+			}
+		}
 		if x.unknownFields != nil {
 			n += len(x.unknownFields)
 		}
@@ -382,6 +465,15 @@ func (x *fastReflection_Post) ProtoMethods() *protoiface.Methods {
 		if x.unknownFields != nil {
 			i -= len(x.unknownFields)
 			copy(dAtA[i:], x.unknownFields)
+		}
+		if len(x.Tags) > 0 {
+			for iNdEx := len(x.Tags) - 1; iNdEx >= 0; iNdEx-- {
+				i -= len(x.Tags[iNdEx])
+				copy(dAtA[i:], x.Tags[iNdEx])
+				i = runtime.EncodeVarint(dAtA, i, uint64(len(x.Tags[iNdEx])))
+				i--
+				dAtA[i] = 0x2a
+			}
 		}
 		if x.Id != 0 {
 			i = runtime.EncodeVarint(dAtA, i, uint64(x.Id))
@@ -573,6 +665,38 @@ func (x *fastReflection_Post) ProtoMethods() *protoiface.Methods {
 						break
 					}
 				}
+			case 5:
+				if wireType != 2 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, fmt.Errorf("proto: wrong wireType = %d for field Tags", wireType)
+				}
+				var stringLen uint64
+				for shift := uint(0); ; shift += 7 {
+					if shift >= 64 {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrIntOverflow
+					}
+					if iNdEx >= l {
+						return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+					}
+					b := dAtA[iNdEx]
+					iNdEx++
+					stringLen |= uint64(b&0x7F) << shift
+					if b < 0x80 {
+						break
+					}
+				}
+				intStringLen := int(stringLen)
+				if intStringLen < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				postIndex := iNdEx + intStringLen
+				if postIndex < 0 {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, runtime.ErrInvalidLength
+				}
+				if postIndex > l {
+					return protoiface.UnmarshalOutput{NoUnkeyedLiterals: input.NoUnkeyedLiterals, Flags: input.Flags}, io.ErrUnexpectedEOF
+				}
+				x.Tags = append(x.Tags, string(dAtA[iNdEx:postIndex]))
+				iNdEx = postIndex
 			default:
 				iNdEx = preIndex
 				skippy, err := runtime.Skip(dAtA[iNdEx:])
@@ -626,10 +750,11 @@ type Post struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Title   string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
-	Body    string `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
-	Creator string `protobuf:"bytes,3,opt,name=creator,proto3" json:"creator,omitempty"`
-	Id      uint64 `protobuf:"varint,4,opt,name=id,proto3" json:"id,omitempty"`
+	Title   string   `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	Body    string   `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
+	Creator string   `protobuf:"bytes,3,opt,name=creator,proto3" json:"creator,omitempty"`
+	Id      uint64   `protobuf:"varint,4,opt,name=id,proto3" json:"id,omitempty"`
+	Tags    []string `protobuf:"bytes,5,rep,name=tags,proto3" json:"tags,omitempty"` // Add this line for tags
 }
 
 func (x *Post) Reset() {
@@ -680,26 +805,34 @@ func (x *Post) GetId() uint64 {
 	return 0
 }
 
+func (x *Post) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
 var File_crude_crude_post_proto protoreflect.FileDescriptor
 
 var file_crude_crude_post_proto_rawDesc = []byte{
 	0x0a, 0x16, 0x63, 0x72, 0x75, 0x64, 0x65, 0x2f, 0x63, 0x72, 0x75, 0x64, 0x65, 0x2f, 0x70, 0x6f,
 	0x73, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x0b, 0x63, 0x72, 0x75, 0x64, 0x65, 0x2e,
-	0x63, 0x72, 0x75, 0x64, 0x65, 0x22, 0x5a, 0x0a, 0x04, 0x50, 0x6f, 0x73, 0x74, 0x12, 0x14, 0x0a,
+	0x63, 0x72, 0x75, 0x64, 0x65, 0x22, 0x6e, 0x0a, 0x04, 0x50, 0x6f, 0x73, 0x74, 0x12, 0x14, 0x0a,
 	0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69,
 	0x74, 0x6c, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x62, 0x6f, 0x64, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x04, 0x62, 0x6f, 0x64, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
 	0x6f, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x6f,
 	0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52, 0x02, 0x69,
-	0x64, 0x42, 0x80, 0x01, 0x0a, 0x0f, 0x63, 0x6f, 0x6d, 0x2e, 0x63, 0x72, 0x75, 0x64, 0x65, 0x2e,
-	0x63, 0x72, 0x75, 0x64, 0x65, 0x42, 0x09, 0x50, 0x6f, 0x73, 0x74, 0x50, 0x72, 0x6f, 0x74, 0x6f,
-	0x50, 0x01, 0x5a, 0x15, 0x63, 0x72, 0x75, 0x64, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x63, 0x72,
-	0x75, 0x64, 0x65, 0x2f, 0x63, 0x72, 0x75, 0x64, 0x65, 0xa2, 0x02, 0x03, 0x43, 0x43, 0x58, 0xaa,
-	0x02, 0x0b, 0x43, 0x72, 0x75, 0x64, 0x65, 0x2e, 0x43, 0x72, 0x75, 0x64, 0x65, 0xca, 0x02, 0x0b,
-	0x43, 0x72, 0x75, 0x64, 0x65, 0x5c, 0x43, 0x72, 0x75, 0x64, 0x65, 0xe2, 0x02, 0x17, 0x43, 0x72,
-	0x75, 0x64, 0x65, 0x5c, 0x43, 0x72, 0x75, 0x64, 0x65, 0x5c, 0x47, 0x50, 0x42, 0x4d, 0x65, 0x74,
-	0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0c, 0x43, 0x72, 0x75, 0x64, 0x65, 0x3a, 0x3a, 0x43,
-	0x72, 0x75, 0x64, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x64, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x61, 0x67, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x09, 0x52,
+	0x04, 0x74, 0x61, 0x67, 0x73, 0x42, 0x80, 0x01, 0x0a, 0x0f, 0x63, 0x6f, 0x6d, 0x2e, 0x63, 0x72,
+	0x75, 0x64, 0x65, 0x2e, 0x63, 0x72, 0x75, 0x64, 0x65, 0x42, 0x09, 0x50, 0x6f, 0x73, 0x74, 0x50,
+	0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x15, 0x63, 0x72, 0x75, 0x64, 0x65, 0x2f, 0x61, 0x70,
+	0x69, 0x2f, 0x63, 0x72, 0x75, 0x64, 0x65, 0x2f, 0x63, 0x72, 0x75, 0x64, 0x65, 0xa2, 0x02, 0x03,
+	0x43, 0x43, 0x58, 0xaa, 0x02, 0x0b, 0x43, 0x72, 0x75, 0x64, 0x65, 0x2e, 0x43, 0x72, 0x75, 0x64,
+	0x65, 0xca, 0x02, 0x0b, 0x43, 0x72, 0x75, 0x64, 0x65, 0x5c, 0x43, 0x72, 0x75, 0x64, 0x65, 0xe2,
+	0x02, 0x17, 0x43, 0x72, 0x75, 0x64, 0x65, 0x5c, 0x43, 0x72, 0x75, 0x64, 0x65, 0x5c, 0x47, 0x50,
+	0x42, 0x4d, 0x65, 0x74, 0x61, 0x64, 0x61, 0x74, 0x61, 0xea, 0x02, 0x0c, 0x43, 0x72, 0x75, 0x64,
+	0x65, 0x3a, 0x3a, 0x43, 0x72, 0x75, 0x64, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
