@@ -1,51 +1,23 @@
-# crude
-**crude** is a blockchain built using Cosmos SDK and Tendermint and created with [Ignite CLI](https://ignite.com/cli).
+# Breaking-Consensus Change
+Here breaking-consensus change is introduced to the blockchain in this version.
 
-## Get started
+## What is Breaking-Consensus Change
+Breaking-consensus change occurs when modification is made to the blockchain such that the nodes running in the older version and nodes running in the newer version are expected to unable to interact to one another due to different data formats or protocol logic implemented in both version.
 
+## Current Breaking-Consensus Change Introduced
+In this version, a tag field is added to the create-post function. 
+If using the previous version command, e.g., 
 ```
-ignite chain serve
+cruded tx crude create-post hello "jake testing" --from alice --chain-id crude
 ```
-
-`serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
-
-### Configure
-
-Your blockchain in development can be configured with `config.yml`. To learn more, see the [Ignite CLI docs](https://docs.ignite.com).
-
-### Web Frontend
-
-Additionally, Ignite CLI offers both Vue and React options for frontend scaffolding:
-
-For a Vue frontend, use: `ignite scaffold vue`
-For a React frontend, use: `ignite scaffold react`
-These commands can be run within your scaffolded blockchain project. 
-
-
-For more information see the [monorepo for Ignite front-end development](https://github.com/ignite/web).
-
-## Release
-To release a new version of your blockchain, create and push a new tag with `v` prefix. A new draft release with the configured targets will be created.
-
+the transaction will fail as the blockchain is expecting tags.
+Whereas the new command, e.g.,
 ```
-git tag v0.1
-git push origin v0.1
+cruded tx crude create-post hello "jake testing" --tags "tag1,tag2" --from alice --chain-id crude
 ```
+will work as tag is added.
 
-After a draft release is created, make your final changes from the release page and publish it.
-
-### Install
-To install the latest version of your blockchain node's binary, execute the following command on your machine:
-
-```
-curl https://get.ignite.com/username/crude@latest! | sudo bash
-```
-`username/crude` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
-
-## Learn more
-
-- [Ignite CLI](https://ignite.com/cli)
-- [Tutorials](https://docs.ignite.com/guide)
-- [Ignite CLI docs](https://docs.ignite.com)
-- [Cosmos SDK docs](https://docs.cosmos.network)
-- [Developer Chat](https://discord.gg/ignite)
+### Why this break consensus
+- Older nodes: Do not recognise or expect the tag field hence the transaction will fail.
+- Newer nodes: Requires tags field for validation. Transaction without the tags field will be rejected.
+Hence, older nodes can't interact with new nodes due to differences in the data format.
