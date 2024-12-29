@@ -1,4 +1,5 @@
 syntax = "proto3";
+
 package crude.crude;
 
 import "amino/amino.proto";
@@ -6,25 +7,91 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "crude/crude/params.proto";
+import "crude/crude/post.proto";
 
 option go_package = "crude/x/crude/types";
 
 // Query defines the gRPC querier service.
 service Query {
+  
   // Parameters queries the parameters of the module.
-  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/crude/crude/params";
+  
+  }
+  
+  // Queries a list of ListResources items.
+  rpc ListResources (QueryListResourcesRequest) returns (QueryListResourcesResponse) {
+    option (google.api.http).get = "/crude/crude/list_resources";
+  
+  }
+  
+  // Queries a list of GetResource items.
+  rpc GetResource (QueryGetResourceRequest) returns (QueryGetResourceResponse) {
+    option (google.api.http).get = "/crude/crude/get_resource/{id}";
+  
+  }
+  
+  // Queries a list of SayHello items.
+  rpc SayHello (QuerySayHelloRequest) returns (QuerySayHelloResponse) {
+    option (google.api.http).get = "/crude/crude/say_hello/{name}";
+  
+  }
+  
+  // Queries a list of ShowPost items.
+  rpc ShowPost (QueryShowPostRequest) returns (QueryShowPostResponse) {
+    option (google.api.http).get = "/crude/crude/show_post/{id}";
+  
+  }
+  
+  // Queries a list of ListPost items.
+  rpc ListPost (QueryListPostRequest) returns (QueryListPostResponse) {
+    option (google.api.http).get = "/crude/crude/list_post";
+  
   }
 }
-
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
 
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
+  
   // params holds all the parameters of this module.
-  Params params = 1 [
-    (gogoproto.nullable) = false,
-    (amino.dont_omitempty) = true
-  ];
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
+
+message QueryListResourcesRequest {}
+
+message QueryListResourcesResponse {}
+
+message QueryGetResourceRequest {
+  uint64 id = 1;
+}
+
+message QueryGetResourceResponse {}
+
+message QuerySayHelloRequest {
+  string name = 1;
+}
+
+message QuerySayHelloResponse {
+  string name = 1;
+}
+
+message QueryShowPostRequest {
+  uint64 id = 1;
+}
+
+message QueryShowPostResponse {
+  Post post = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryListPostRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryListPostResponse {
+  repeated Post post = 1 [(gogoproto.nullable) = false];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
